@@ -36,12 +36,13 @@
       </div>
     </div>
   </nav>
-  <main class="pb-5 container">
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
-      </div>
-    </div>
+  <main class="pb-5 container d-flex flex-column align-items-center pt-5">
+    <h1>Productos</h1>
+    <p class="mb-5">Verás aquí todos los productos de la categoría <b id="category_name">Autos</b></p>
+    <!--==== PRODUCT START ===-->
+    <ul id="products_container" class="list-group container">       
+    </ul>
+    <!--==== PRODUCT END ===-->
   </main>
   <footer class="text-muted">
     <div class="container">
@@ -63,7 +64,7 @@
   </div>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
-  <script src="js/products.js"></script>
+  <script type="module" src="js/products.js"></script>
 </body>
 
 </html>
