@@ -1,12 +1,18 @@
 initialRender();
 
-let products_retrieved = await getJSONData(`${PRODUCTS_URL}101${EXT_TYPE}`);
-let products_html_container = document.getElementById('products_container');
-let category_name_span = document.getElementById('category_name');
+const catID = window.localStorage.getItem('catID')
+const products_retrieved = await getJSONData(`${PRODUCTS_URL}${catID}${EXT_TYPE}`);
+const products_html_container = document.getElementById('products_container');
+const category_name_span = document.getElementById('category_name');
+const min_price_range = document.getElementById('rangeFilterCountMin');
+const max_price_range = document.getElementById('rangeFilterCountMax');
+const sorting_container = document.getElementById('sorting_container');
+// Storage of price-range filtered products to combine with the rest of the filters. 
+let sorted_products_by_range = [];
 
 const { products } = products_retrieved.data;
 
-category_name_span.textContent = products_retrieved.catName;
+category_name_span.textContent = products_retrieved.data.catName;
 
 function createProductHtml(product_info) {
     /*
@@ -53,4 +59,49 @@ function createProductHtml(product_info) {
     products_html_container.appendChild(li);
 }
 
+// Help function
+function clearRangeFilter() {
+    sorted_products_by_range = [];
+    products_html_container.textContent = "";
+    sortProducts('SORT_BY_LOWEST_PRICE', products).map(product => createProductHtml(product));
+}
+
+// To avoid usage of multiple addEventListeners I take advantage of the stopPropagation method to avoid event bubbling. 
+sorting_container.addEventListener('click', function(e) {
+    e.stopPropagation();
+    
+    const sort_criteria = e.target.getAttribute('data-criteria');
+    if(!sort_criteria) return;
+    if(sort_criteria == 'CLEAR_RANGE_FILTER') return clearRangeFilter();
+
+    let filtered_products = sorted_products_by_range.length > 0 ? sortProducts(sort_criteria, sorted_products_by_range) : sortProducts(sort_criteria, products);
+
+    if(sort_criteria === 'SORT_BY_PRICE_RANGE') sorted_products_by_range = filtered_products;
+
+    products_html_container.textContent = "";
+    filtered_products.map((product) => createProductHtml(product))
+})
+
+// Sorting function
+function sortProducts(criteria, list_of_products) {
+    let sorted_products;
+    switch(criteria) {
+        case 'SORT_BY_PRICE_RANGE':
+            if(max_price_range.value < min_price_range.value) return alert('El precio mínimo debe ser menor que el precio máximo');
+            sorted_products = list_of_products.filter((product) => product.cost <= max_price_range.value && product.cost >= min_price_range.value);
+            break
+        case 'SORT_BY_LOWEST_PRICE':
+            sorted_products = list_of_products.sort((a, b) => a.cost < b.cost ? -1 : 1)
+            break
+        case 'SORT_BY_HIGHEST_PRICE':
+            sorted_products = list_of_products.sort((a, b) => a.cost < b.cost ? 1 : -1)
+            break
+        case 'SORT_BY_RELEVANCE':
+            sorted_products = list_of_products.sort((a, b) => a.soldCount < b.cost ? -1 : 1)
+            break
+    }
+    return sorted_products;
+}
+
+// Initial render
 products.map((product, index) => createProductHtml(product))

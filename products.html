@@ -38,7 +38,45 @@
   </nav>
   <main class="pb-5 container d-flex flex-column align-items-center pt-5">
     <h1>Productos</h1>
-    <p class="mb-5">Verás aquí todos los productos de la categoría <b id="category_name">Autos</b></p>
+    <p class="mb-5">Verás aquí todos los productos de la categoría <b id="category_name"></b></p>
+    <!--=== SORT FILTER START ===-->
+    <div class="container" id="sorting_container">
+      <div class="row">
+        <div class="col text-end">
+          <div class="btn-group btn-group-toggle mb-4" data-bs-toggle="buttons">
+            <label class="btn btn-light z-index-10" data-criteria="SORT_BY_LOWEST_PRICE" for="sortByLowestPrice" id="sortByLowestPrice"><i class="fas fa-sort-amount-down mr-1" data-criteria="SORT_BY_LOWEST_PRICE"></i>$</label>
+            <label class="btn btn-light z-index-10" data-criteria="SORT_BY_HIGHEST_PRICE" for="sortByHighestPrice" id="sortByHighestPrice"><i class="fas fa-sort-amount-up mr-1" data-criteria="SORT_BY_HIGHEST_PRICE"></i>$</label>
+            <label class="btn btn-light z-index-10" data-criteria="SORT_BY_RELEVANCE" for="sortByRelevance" id="sortByRelevance"><i class="fas fa-sort-amount-down mr-1" data-criteria="SORT_BY_RELEVANCE"></i>Rel.</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 offset-lg-6 col-md-12 mb-1 container">
+          <div class="row container p-0 m-0">
+            <div class="col">
+              <p class="font-weight-normal text-end my-2">Precio</p>
+            </div>
+            <div class="col">
+              <input class="form-control" type="number" placeholder="min." id="rangeFilterCountMin">
+            </div>
+            <div class="col">
+              <input class="form-control" type="number" placeholder="máx." id="rangeFilterCountMax">
+            </div>
+            <div class="col-3 p-0">
+              <div class="btn-group" role="group">
+                <button class="btn btn-light btn-block" data-criteria="SORT_BY_PRICE_RANGE" id="rangeFilterCount">Filtrar</button>
+                <button class="btn btn-link btn-sm" data-criteria="CLEAR_RANGE_FILTER" id="clearRangeFilter">Limpiar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="list-group" id="cat-list-container">
+        </div>
+      </div>
+    </div>
+    <!--=== SORT FILTER END ===-->
     <!--==== PRODUCT START ===-->
     <ul id="products_container" class="list-group container">       
     </ul>

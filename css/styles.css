@@ -188,3 +188,7 @@ a.custom-card:hover {
 .checked {
   color: orange;
 }
+
+.z-index-10 {
+  z-index: 10;
+}

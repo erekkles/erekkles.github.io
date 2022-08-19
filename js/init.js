@@ -11,7 +11,6 @@ let initialRender = function(){
   const name = window.localStorage.getItem('name')
   if(name) {
     const nav_item = document.querySelectorAll('.nav-item')[3];
-    console.log(nav_item)
     const a_element = document.createElement('a');
     const text = document.createTextNode(name);
     a_element.appendChild(text);
