@@ -62,26 +62,6 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="js/login.js"></script>
   <script src="js/init.js"></script>
-  <script>
-
-    // This function parses de JWT token given by Google Auth
-    function parseJwt (token) {
-      let base64Url = token.split('.')[1];
-      let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-
-      return JSON.parse(jsonPayload);
-    };
-
-    function onSignIn(googleUser) {
-      const username = parseJwt(googleUser.credential).name
-      window.localStorage.setItem('isLogged', true)
-      alert(`Bienvenido ${username}!`)
-      window.location.href = window.origin;
-    }
-  </script>
 </body>
 
 </html>

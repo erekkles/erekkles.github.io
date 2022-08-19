@@ -1,3 +1,5 @@
+initialRender();
+
 let products_retrieved = await getJSONData(`${PRODUCTS_URL}101${EXT_TYPE}`);
 let products_html_container = document.getElementById('products_container');
 let category_name_span = document.getElementById('category_name');
