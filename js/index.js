@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function(){
+    initialRender();
+
     // Firstly, check if the user did visit the login page. In case not, send the user to login page. Go to /js/login.js to check logic. 
     window.localStorage.getItem('isLogged') ? null : window.location.href = window.origin + "/login.html";
-    initialRender();
 
     document.getElementById("autos").addEventListener("click", function() {
         localStorage.setItem("catID", 101);

@@ -7,6 +7,7 @@ const category_name_span = document.getElementById('category_name');
 const min_price_range = document.getElementById('rangeFilterCountMin');
 const max_price_range = document.getElementById('rangeFilterCountMax');
 const sorting_container = document.getElementById('sorting_container');
+const searchbar = document.getElementById('searchbar');
 // Storage of price-range filtered products to combine with the rest of the filters. 
 let sorted_products_by_range = [];
 
@@ -76,18 +77,34 @@ sorting_container.addEventListener('click', function(e) {
 
     let filtered_products = sorted_products_by_range.length > 0 ? sortProducts(sort_criteria, sorted_products_by_range) : sortProducts(sort_criteria, products);
 
+    if(filtered_products.length == 0) return;
+
     if(sort_criteria === 'SORT_BY_PRICE_RANGE') sorted_products_by_range = filtered_products;
 
     products_html_container.textContent = "";
     filtered_products.map((product) => createProductHtml(product))
 })
 
+searchbar.addEventListener('change', function(e) {
+    if(searchbar.value.length <= 0) {
+        return sorted_products_by_range.length > 0 ? sorted_products_by_range.map((product) => createProductHtml(product)) : products.map((product) => createProductHtml(product));
+    };
+    const sort_criteria = 'SORT_BY_TEXT';
+    const text = e.target.value.toLowerCase();
+
+    let filtered_products = sorted_products_by_range.length > 0 ? sortProducts(sort_criteria, sorted_products_by_range, text) : sortProducts(sort_criteria, products, text);
+
+    products_html_container.textContent = "";
+    filtered_products.map((product) => createProductHtml(product))
+})
+
 // Sorting function
-function sortProducts(criteria, list_of_products) {
+function sortProducts(criteria, list_of_products, optional_text_search) {
     let sorted_products;
     switch(criteria) {
         case 'SORT_BY_PRICE_RANGE':
             if(max_price_range.value < min_price_range.value) return alert('El precio mínimo debe ser menor que el precio máximo');
+            if(max_price_range.value.length <= 0 || min_price_range.value <= 0) return alert('Los campos están vacios');
             sorted_products = list_of_products.filter((product) => product.cost <= max_price_range.value && product.cost >= min_price_range.value);
             break
         case 'SORT_BY_LOWEST_PRICE':
@@ -98,6 +115,9 @@ function sortProducts(criteria, list_of_products) {
             break
         case 'SORT_BY_RELEVANCE':
             sorted_products = list_of_products.sort((a, b) => a.soldCount < b.cost ? -1 : 1)
+            break
+        case 'SORT_BY_TEXT':
+            sorted_products = list_of_products.filter((product) => product.name.toLowerCase().includes(optional_text_search) || product.description.toLowerCase().includes(optional_text_search));
             break
     }
     return sorted_products;

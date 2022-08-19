@@ -51,8 +51,11 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-6 offset-lg-6 col-md-12 mb-1 container">
+        <div class="col-lg-12 col-md-12 mb-1 container">
           <div class="row container p-0 m-0">
+            <div class="col-6 p-0">
+              <input type="text" class="form-control" id="searchbar" placeholder="Buscar por nombre o descripción">
+            </div>
             <div class="col">
               <p class="font-weight-normal text-end my-2">Precio</p>
             </div>
@@ -62,7 +65,7 @@
             <div class="col">
               <input class="form-control" type="number" placeholder="máx." id="rangeFilterCountMax">
             </div>
-            <div class="col-3 p-0">
+            <div class="col p-0">
               <div class="btn-group" role="group">
                 <button class="btn btn-light btn-block" data-criteria="SORT_BY_PRICE_RANGE" id="rangeFilterCount">Filtrar</button>
                 <button class="btn btn-link btn-sm" data-criteria="CLEAR_RANGE_FILTER" id="clearRangeFilter">Limpiar</button>
