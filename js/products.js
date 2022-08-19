@@ -85,7 +85,7 @@ sorting_container.addEventListener('click', function(e) {
     filtered_products.map((product) => createProductHtml(product))
 })
 
-searchbar.addEventListener('change', function(e) {
+searchbar.addEventListener('input', function(e) {
     if(searchbar.value.length <= 0) {
         return sorted_products_by_range.length > 0 ? sorted_products_by_range.map((product) => createProductHtml(product)) : products.map((product) => createProductHtml(product));
     };
