@@ -8,11 +8,14 @@ const min_price_range = document.getElementById('rangeFilterCountMin');
 const max_price_range = document.getElementById('rangeFilterCountMax');
 const sorting_container = document.getElementById('sorting_container');
 const searchbar = document.getElementById('searchbar');
+const { origin } = window.location; 
 // Storage of price-range filtered products to combine with the rest of the filters. 
 let sorted_products_by_range = [];
 
 const { products } = products_retrieved.data;
+console.log("🚀 ~ file: products.js ~ line 15 ~ products", products)
 
+// Set the name of the category in DOM
 category_name_span.textContent = products_retrieved.data.catName;
 
 function createProductHtml(product_info) {
@@ -22,6 +25,7 @@ function createProductHtml(product_info) {
 
     // Create all the elements needed to show one product at catalog
     let li = document.createElement('li');
+    let layer = document.createElement('div');
     let li_img = document.createElement('img');
     let li_div = document.createElement('div');
     let li_div__div = document.createElement('div');
@@ -35,7 +39,8 @@ function createProductHtml(product_info) {
     let p_text = document.createTextNode(product_info.description);
 
     // Add bootstrap classes to the elements
-    li.classList.add('d-flex', 'list-group-item', 'list-group-item-action', 'w-100', 'px-3', 'py-2');
+    li.classList.add('d-flex', 'position-relative', 'list-group-item', 'list-group-item-action', 'w-100', 'px-3', 'py-2');
+    layer.classList.add('position-absolute', 'w-100', 'h-100', 'top-0', 'start-0')
     li_img.classList.add('w-25', 'img-thumbnail');
     li_div.classList.add('d-flex', 'flex-column', 'w-75', 'ps-4');
     li_div__div.classList.add('d-flex', 'w-100', 'justify-content-between');
@@ -47,6 +52,7 @@ function createProductHtml(product_info) {
 
     li_img.src = product_info.image;
     li_img.alt = `${product_info.name} ${product_info.description}`
+    layer.id = `${product_info.id}`
 
     // Structure all elements
     li_div__div.appendChild(li_div__div___h2);
@@ -54,6 +60,7 @@ function createProductHtml(product_info) {
     li_div.appendChild(li_div__div);
     li.appendChild(li_img);
     li.appendChild(li_div);
+    li.appendChild(layer)
     li_div.appendChild(li_div__p);
 
     //Append all elements to DOM
@@ -62,36 +69,49 @@ function createProductHtml(product_info) {
 
 // Help function
 function clearRangeFilter() {
+    // Clear the auxiliar sorted by price-range array
     sorted_products_by_range = [];
+    // Delete all products shown in the DOM
     products_html_container.textContent = "";
-    sortProducts('SORT_BY_LOWEST_PRICE', products).map(product => createProductHtml(product));
+    // Populate catalog with all products sorted by lowest price as default behaviour
+    sortProducts('SORT_BY_LOWEST_PRICE', products).forEach(product => createProductHtml(product));
 }
 
 // To avoid usage of multiple addEventListeners I take advantage of the stopPropagation method to avoid event bubbling. 
 sorting_container.addEventListener('click', function(e) {
     e.stopPropagation();
     
+    // Get the sorting criteria from user input, then check 1) does it exist? and 2) do the user wants to clean the range filter?
     const sort_criteria = e.target.getAttribute('data-criteria');
     if(!sort_criteria) return;
     if(sort_criteria == 'CLEAR_RANGE_FILTER') return clearRangeFilter();
 
+    // If the user did filter the products by price range, use the auxiliar sorted by price-range array, otherwise sort all products. 
     let filtered_products = sorted_products_by_range.length > 0 ? sortProducts(sort_criteria, sorted_products_by_range) : sortProducts(sort_criteria, products);
 
+    // If there isn't a product that matches the sort criteria, return nothing. 
     if(filtered_products.length == 0) return;
 
+    // If the sort criteria is by range, save the filtered products in the auxiliar sorted by price-range array to be able to combine filters.
     if(sort_criteria === 'SORT_BY_PRICE_RANGE') sorted_products_by_range = filtered_products;
 
+    // Re-paint DOM with updated content
     products_html_container.textContent = "";
-    filtered_products.map((product) => createProductHtml(product))
+    filtered_products.forEach((product) => createProductHtml(product))
 })
 
+// Filter with searchbar input
 searchbar.addEventListener('input', function(e) {
+
+    // If searchbar is empty, default to show all products or priced-ranged products if any
     if(searchbar.value.length <= 0) {
-        return sorted_products_by_range.length > 0 ? sorted_products_by_range.map((product) => createProductHtml(product)) : products.map((product) => createProductHtml(product));
+        return sorted_products_by_range.length > 0 ? sorted_products_by_range.forEach((product) => createProductHtml(product)) : products.forEach((product) => createProductHtml(product));
     };
+
     const sort_criteria = 'SORT_BY_TEXT';
     const text = e.target.value.toLowerCase();
 
+    // Sort products by text checking if 
     let filtered_products = sorted_products_by_range.length > 0 ? sortProducts(sort_criteria, sorted_products_by_range, text) : sortProducts(sort_criteria, products, text);
 
     products_html_container.textContent = "";
@@ -124,4 +144,4 @@ function sortProducts(criteria, list_of_products, optional_text_search) {
 }
 
 // Initial render
-products.map((product, index) => createProductHtml(product))
+products.forEach((product) => createProductHtml(product))
