@@ -38,9 +38,36 @@
   </nav>
   <main>
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+      <!--=== PRODUCT INFO ===-->
+      <h1 id="product_name" class="my-5"></h1>
+      <hr>
+      <div id="product_assets">
+        <div>
+          <p class="fw-bold m-0">Precio</p>
+          <p id="price"></p>
+        </div>
+        <div>
+          <p class="fw-bold m-0">Descripción</p>
+          <p id="description"></p>
+        </div>
+        <div>
+          <p class="fw-bold m-0">Categoría</p>
+          <p id="category"></p>
+        </div>
+        <div>
+          <p class="fw-bold m-0">Cantidad de vendidos</p>
+          <p id="soldCount"></p>
+        </div>
+        <div>
+          <p class="fw-bold m-0">Imágenes ilustrativas</p>
+          <div class="d-flex row justify-content-between" id="images"></div>
+        </div>
       </div>
+    </div>
+    <!--=== COMMENTS ===-->
+    <div class="container">
+      <h3 class="mt-5">Comentarios</h3>
+      <ul id="comments_wrapper" class="list-group"></ul>
     </div>
   </main>
   <footer class="text-muted">
@@ -63,7 +90,7 @@
   </div>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
-  <script src="js/product-info.js"></script>
+  <script type="module" src="js/product-info.js"></script>
 </body>
 
 </html>

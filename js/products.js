@@ -27,10 +27,6 @@ products_html_container.addEventListener('click', (e) => {
 })
 
 function createProductHtml(product_info) {
-    /*
-     * I do it this way in order to avoid innerHTML and the security flaws associated with it.
-    */
-
     // Create all the elements needed to show one product at catalog
     let li = document.createElement('li');
     let layer = document.createElement('div');
