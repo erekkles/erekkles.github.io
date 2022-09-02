@@ -18,6 +18,14 @@ console.log("🚀 ~ file: products.js ~ line 15 ~ products", products)
 // Set the name of the category in DOM
 category_name_span.textContent = products_retrieved.data.catName;
 
+// When clicking on any of the products, save its ID and then redirect to product info page
+products_html_container.addEventListener('click', (e) => {
+    e.stopPropagation();   
+    const { id } = e.target;
+    localStorage.setItem('productID', id);
+    window.location.href = `${origin}/product-info.html`
+})
+
 function createProductHtml(product_info) {
     /*
      * I do it this way in order to avoid innerHTML and the security flaws associated with it.
