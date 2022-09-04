@@ -13,7 +13,6 @@ const { origin } = window.location;
 let sorted_products_by_range = [];
 
 const { products } = products_retrieved.data;
-console.log("🚀 ~ file: products.js ~ line 15 ~ products", products)
 
 // Set the name of the category in DOM
 category_name_span.textContent = products_retrieved.data.catName;
