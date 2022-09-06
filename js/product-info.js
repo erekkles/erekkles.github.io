@@ -11,9 +11,8 @@ const new_comment_field = $('#commentField');
 const score_field = $('#scoreField');
 const send_button = $('#send_new_message');
 const product_id = localStorage.getItem('productID');
-let original_stars_markup = `<span class="fa fa-star"></span>.<span class="fa fa-star"></span>.<span class="fa fa-star"></span>.<span class="fa fa-star"></span>.<span class="fa fa-star"></span>`
+let original_stars_markup = ['<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>']
 
-// Fetch all the product and comment information
 const { data: product_info } = await getJSONData(`${PRODUCT_INFO_URL}${product_id}${EXT_TYPE}`);
 const { data: comments_info } = await getJSONData(`${PRODUCT_INFO_COMMENTS_URL}${product_id}${EXT_TYPE}`);
 
@@ -71,14 +70,13 @@ function createCommentHtml(comment) {
     /* Set stars score: Since we have the the markup for the regular (not filled) stars in the local variable 'original_stars_markup', in order to fill the stars based on the score of each 
     ** comment, we create an array that divides all the spans of the string in items of an array and through a for loop we access each span (using as limit of the loop the number of  
     ** comment's stars) and add the class 'checked' corresponding span, which will make the star be filled */
-    let stars_markup_array = original_stars_markup.split(".");
     for(let i = 0; i < comment.score; i++) {
         // 13 represents the index of the start of the class' quoatation marks inside the following string: '<span class="fa fa-star">'
-        stars_markup_array[i] = stars_markup_array[i].slice(0, 13) + "checked " + stars_markup_array[i].slice(13);
+        original_stars_markup[i] = original_stars_markup[i].slice(0, 13) + "checked " + original_stars_markup[i].slice(13);
     }
 
     // Join the now modified stars' markup into a string, then add it to the DOM as adjacent HTML. 
-    let new_stars_markup = stars_markup_array.join(" ")
+    let new_stars_markup = original_stars_markup.join(" ")
 
     li_p.insertAdjacentHTML('beforeend', new_stars_markup);
 
