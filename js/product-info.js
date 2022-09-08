@@ -69,14 +69,21 @@ function createCommentHtml(comment) {
 
     /* Set stars score: Since we have the the markup for the regular (not filled) stars in the local variable 'original_stars_markup', in order to fill the stars based on the score of each 
     ** comment, we create an array that divides all the spans of the string in items of an array and through a for loop we access each span (using as limit of the loop the number of  
-    ** comment's stars) and add the class 'checked' corresponding span, which will make the star be filled */
+        ** comment's stars) and add the class 'checked' corresponding span, which will make the star be filled */
+    let new_stars_markup = [];
+
     for(let i = 0; i < comment.score; i++) {
         // 13 represents the index of the start of the class' quoatation marks inside the following string: '<span class="fa fa-star">'
-        original_stars_markup[i] = original_stars_markup[i].slice(0, 13) + "checked " + original_stars_markup[i].slice(13);
+       new_stars_markup.push(original_stars_markup[i].slice(0, 13) + "checked " + original_stars_markup[i].slice(13));
     }
 
+    for(let i = 0; new_stars_markup.length < 5; i++) {
+        new_stars_markup.push(original_stars_markup[0]);
+    }
+
+    new_stars_markup = new_stars_markup.join(" ");  
+
     // Join the now modified stars' markup into a string, then add it to the DOM as adjacent HTML. 
-    let new_stars_markup = original_stars_markup.join(" ")
 
     li_p.insertAdjacentHTML('beforeend', new_stars_markup);
 
