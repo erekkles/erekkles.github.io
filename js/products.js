@@ -15,7 +15,6 @@ const { products } = products_retrieved.data;
 
 category_name_span.textContent = products_retrieved.data.catName;
 
-// D(1) When clicking on any of the products, save its ID and then redirect to product info page
 products_html_container.addEventListener('click', (e) => {
     e.stopPropagation();   
     const { id } = e.target;
@@ -62,15 +61,12 @@ function createProductHtml(product_info) {
     products_html_container.appendChild(li);
 }
 
-// Help function
 function clearRangeFilter() {
     sorted_products_by_range = [];
     products_html_container.textContent = "";
-    // Populate catalog with all products sorted by lowest price as default behaviour
     sortProducts('SORT_BY_LOWEST_PRICE', products).forEach(product => createProductHtml(product));
 }
 
-// To avoid usage of multiple addEventListeners I take advantage of the stopPropagation method to avoid event bubbling. 
 sorting_container.addEventListener('click', function(e) {
     e.stopPropagation();
     
@@ -78,7 +74,6 @@ sorting_container.addEventListener('click', function(e) {
     if(!sort_criteria) return;
     if(sort_criteria == 'CLEAR_RANGE_FILTER') return clearRangeFilter();
 
-    // If the user did filter the products by price range, use the auxiliar sorted by price-range array, otherwise sort all products. 
     let filtered_products = sorted_products_by_range.length > 0 ? sortProducts(sort_criteria, sorted_products_by_range) : sortProducts(sort_criteria, products);
 
     if(filtered_products.length == 0) return;
@@ -105,7 +100,6 @@ searchbar.addEventListener('input', function(e) {
     filtered_products.map((product) => createProductHtml(product))
 })
 
-// Sorting function
 function sortProducts(criteria, list_of_products, optional_text_search) {
     let sorted_products;
     switch(criteria) {

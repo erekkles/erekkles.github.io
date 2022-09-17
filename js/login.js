@@ -9,8 +9,7 @@ form.addEventListener('submit', function(event) {
     for(let i = 0; i < inputs.length; i++) {
         if(inputs[i].value.length === 0) inputs[i].classList.add('is-invalid');
     }
-
-    // When logged in for the first time, 
+ 
     if(inputs[0].value.length !== 0 && inputs[1].value.length !== 0) { 
         window.localStorage.setItem('isLogged', true);
         window.localStorage.setItem('name', inputs[0].value);
