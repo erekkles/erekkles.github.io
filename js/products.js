@@ -17,9 +17,7 @@ category_name_span.textContent = products_retrieved.data.catName;
 
 products_html_container.addEventListener('click', (e) => {
     e.stopPropagation();   
-    const { id } = e.target;
-    localStorage.setItem('productID', id);
-    window.location.href = `${origin}/product-info.html`
+    redirectToProductPage(e.target.id);
 })
 
 function createProductHtml(product_info) {

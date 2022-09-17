@@ -22,6 +22,11 @@ let initialRender = function(){
   }
 }
 
+let redirectToProductPage = function(id) {
+  localStorage.setItem('productID', id);
+  window.location.href = `${origin}/product-info.html`
+}
+
 let showSpinner = function(){
   $("#spinner-wrapper").style.display = "block";
 }

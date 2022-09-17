@@ -10,6 +10,7 @@ const COMMENTS_DIV = $('#comments_wrapper');
 const NEW_COMMENT_FIELD = $('#commentField');
 const SCORE_FIELD = $('#scoreField');
 const SEND_BUTTON = $('#send_new_message');
+const RELATED_PRODUCTS_DIV = $('#relatedProducts')
 const PRODUCT_ID = localStorage.getItem('productID');
 
 let original_stars_markup = ['<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>']
@@ -21,7 +22,7 @@ function showData() {
 
     const LOCAL_COMMENTS = JSON.parse(localStorage.getItem(`${PRODUCT_INFO.id}newComments`)) ?? [];
     const CURRENT_COMMENT_LIST = [...COMMENTS_INFO, ...LOCAL_COMMENTS];
-    const { images: IMAGES } = PRODUCT_INFO;    
+    const { images: IMAGES, relatedProducts: RELATED_PRODUCTS } = PRODUCT_INFO;    
 
     PRODUCT_TITLE.textContent = PRODUCT_INFO.name;
     PRICE_DIV.textContent = PRODUCT_INFO.cost;
@@ -36,6 +37,10 @@ function showData() {
     CURRENT_COMMENT_LIST.forEach((comment) => {
         createCommentHtml(comment);
     })
+
+    RELATED_PRODUCTS.forEach((product) => {
+        createRelatedProductsHtml(product);
+    })
 }
 
 function createImagesHtml(image) {
@@ -49,13 +54,21 @@ function createImagesHtml(image) {
 }
 
 function createCommentHtml(comment) {
+console.log("🚀 ~ file: product-info.js ~ line 57 ~ createCommentHtml ~ comment", comment)
+
+    const CURRENT_DATE_TIME = comment.CURRENT_DATE_TIME ?? comment.dateTime;
+    const DESCRIPTION = comment.DESCRIPTION ?? comment.description;
+    const USER = comment.USER ?? comment.user;
+    const SCORE = comment.SCORE ?? comment.score;
+    
+
     const LI = document.createElement('li');
     const LI_P = document.createElement('p');
     const LI_P_SPAN = document.createElement('span');
-    const P_TEXT = document.createTextNode(` - ${comment.dateTime} - `)
-    const LI_COMMENT = document.createTextNode(comment.description)
+    const P_TEXT = document.createTextNode(` - ${CURRENT_DATE_TIME} - `)
+    const LI_COMMENT = document.createTextNode(DESCRIPTION)
 
-    LI_P_SPAN.textContent = comment.user
+    LI_P_SPAN.textContent = USER
 
     LI_P.classList.add('my-0')
     LI.classList.add('list-group-item');
@@ -69,7 +82,7 @@ function createCommentHtml(comment) {
         ** comment's stars) and add the class 'checked' corresponding span, which will make the star be filled */
     let new_stars_markup = [];
 
-    for(let i = 0; i < comment.score; i++) {
+    for(let i = 0; i < SCORE; i++) {
         // 13 represents the index of the start of the class' quoatation marks inside the following string: '<span class="fa fa-star">'
        new_stars_markup.push(original_stars_markup[i].slice(0, 13) + "checked " + original_stars_markup[i].slice(13));
     }
@@ -99,6 +112,36 @@ function parseDate(date){
     return `${YEAR}-${MONTH < 10 ? '0' + MONTH : MONTH}-${DAY < 10 ? '0' + DAY : DAY} ${HOUR < 10 ? '0' + HOUR : HOUR}:${MINUTES < 10 ? '0' + MINUTES : MINUTES}:${SECONDS < 10 ? '0' + SECONDS : SECONDS}`
 }
 
+function createRelatedProductsHtml(product) {
+    const { name: PRODUCT_NAME, image: PRODUCT_IMG, id: PRODUCT_ID } = product;
+    
+    const CARD_DIV = document.createElement('div');
+    const IMG_TAG = document.createElement('img');
+    const CARD_BODY_DIV = document.createElement('div');
+    const P_TITLE = document.createElement('p');
+    const ID_HOLDER = document.createElement('div');
+    const TITLE_TEXT = document.createTextNode(PRODUCT_NAME);
+
+    CARD_DIV.classList.add('card', 'mx-1', 'position-relative');
+    IMG_TAG.classList.add('card-img-top');
+    CARD_BODY_DIV.classList.add('card-body');
+    ID_HOLDER.classList.add('w-100', 'h-100', 'position-absolute', 'top-0');
+    P_TITLE.classList.add('card-text');
+
+    ID_HOLDER.id = PRODUCT_ID;
+    CARD_DIV.style.width = '18rem';
+    IMG_TAG.src = PRODUCT_IMG;
+    IMG_TAG.alt = PRODUCT_NAME + ' picture';
+
+    P_TITLE.appendChild(TITLE_TEXT);
+    CARD_BODY_DIV.appendChild(P_TITLE);
+    CARD_DIV.appendChild(ID_HOLDER);
+    CARD_DIV.appendChild(IMG_TAG);
+    CARD_DIV.appendChild(CARD_BODY_DIV);
+
+    RELATED_PRODUCTS_DIV.appendChild(CARD_DIV);
+}
+
 function submitNewComment() {
     const PRODUCT = PRODUCT_INFO.id;
     const USER = localStorage.getItem('name');
@@ -123,6 +166,10 @@ function submitNewComment() {
 }
 
 SEND_BUTTON.addEventListener('click', submitNewComment)
+RELATED_PRODUCTS_DIV.addEventListener('click', (e) => {
+    e.stopPropagation();
+    redirectToProductPage(e.target.id);
+})
 
 // First render
 showData();
