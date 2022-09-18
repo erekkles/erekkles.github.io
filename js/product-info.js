@@ -19,7 +19,6 @@ const { data: PRODUCT_INFO } = await getJSONData(`${PRODUCT_INFO_URL}${PRODUCT_I
 const { data: COMMENTS_INFO } = await getJSONData(`${PRODUCT_INFO_COMMENTS_URL}${PRODUCT_ID}${EXT_TYPE}`);
 
 function showData() { 
-
     const LOCAL_COMMENTS = JSON.parse(localStorage.getItem(`${PRODUCT_INFO.id}newComments`)) ?? [];
     const CURRENT_COMMENT_LIST = [...COMMENTS_INFO, ...LOCAL_COMMENTS];
     const { images: IMAGES, relatedProducts: RELATED_PRODUCTS } = PRODUCT_INFO;    
@@ -54,8 +53,6 @@ function createImagesHtml(image) {
 }
 
 function createCommentHtml(comment) {
-console.log("🚀 ~ file: product-info.js ~ line 57 ~ createCommentHtml ~ comment", comment)
-
     const CURRENT_DATE_TIME = comment.CURRENT_DATE_TIME ?? comment.dateTime;
     const DESCRIPTION = comment.DESCRIPTION ?? comment.description;
     const USER = comment.USER ?? comment.user;
@@ -165,7 +162,8 @@ function submitNewComment() {
     createCommentHtml(NEW_COMMENT)
 }
 
-SEND_BUTTON.addEventListener('click', submitNewComment)
+SEND_BUTTON.addEventListener('click', submitNewComment);
+
 RELATED_PRODUCTS_DIV.addEventListener('click', (e) => {
     e.stopPropagation();
     redirectToProductPage(e.target.id);
