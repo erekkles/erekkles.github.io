@@ -43,11 +43,32 @@ function showData() {
 }
 
 function createImagesHtml(image) {
+    const CAROUSEL = $('#carousel');
+    const IS_CAROUSEL_ACTIVE = $('.active');
+
+    const CAROUSEL_ITEM = document.createElement('div');
+    const CAROUSEL_IMG = document.createElement('img');
+    
     const IMG_DIV = document.createElement('div');
     const IMG_TAG = document.createElement('img');
-    IMG_DIV.classList.add('col-3')
+    
+    if(IS_CAROUSEL_ACTIVE) { 
+        CAROUSEL_ITEM.classList.add('carousel-item')
+    } else {
+        CAROUSEL_ITEM.classList.add('carousel-item', 'active');
+    }
+    
+    CAROUSEL_IMG.classList.add('d-block', 'w-100');
+    IMG_DIV.classList.add('col-9')
     IMG_TAG.classList.add('img-thumbnail', 'w-100');
+    
+    CAROUSEL_IMG.src = image;
+    CAROUSEL_IMG.alt = image.slice(4, -4);
     IMG_TAG.src = image;
+    
+    CAROUSEL_ITEM.appendChild(CAROUSEL_IMG);
+    CAROUSEL.appendChild(CAROUSEL_ITEM);
+
     IMG_DIV.appendChild(IMG_TAG)
     IMAGES_DIV.appendChild(IMG_DIV)
 }
