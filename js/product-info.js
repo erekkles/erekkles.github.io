@@ -63,7 +63,7 @@ function createImagesHtml(image) {
     IMG_TAG.classList.add('img-thumbnail', 'w-100');
     
     CAROUSEL_IMG.src = image;
-    CAROUSEL_IMG.alt = image.slice(4, -4);
+    CAROUSEL_IMG.alt = image.slice(4, -4); // This slice returns the relative route of the image without the parent folder (img/) and the extension (.jpg),
     IMG_TAG.src = image;
     
     CAROUSEL_ITEM.appendChild(CAROUSEL_IMG);
