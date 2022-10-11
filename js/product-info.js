@@ -188,20 +188,21 @@ function submitNewComment() {
 SEND_BUTTON.addEventListener('click', submitNewComment);
 
 ADD_TO_CART_BUTTON.addEventListener('click', () => {
+    const CURRENT_ITEM = [{
+        id: PRODUCT_INFO.id,
+        name: PRODUCT_INFO.name,
+        count: 1,
+        unitCost: PRODUCT_INFO.cost,
+        currency: PRODUCT_INFO.currency,
+        image: PRODUCT_INFO.images[0]
+    }]
 
     if(itemsInCart !== null) itemsInCart = [
         ...itemsInCart, 
-        {
-            id: PRODUCT_INFO.id,
-            name: PRODUCT_INFO.name,
-            count: 1,
-            unitCost: PRODUCT_INFO.cost,
-            currency: PRODUCT_INFO.currency,
-            image: PRODUCT_INFO.images[0]
-        }
+        ...CURRENT_ITEM
     ]
 
-    localStorage.setItem('cartItems', JSON.stringify(itemsInCart))
+    localStorage.setItem('cartItems', JSON.stringify(itemsInCart ?? CURRENT_ITEM))
 })
 
 RELATED_PRODUCTS_DIV.addEventListener('click', (e) => {

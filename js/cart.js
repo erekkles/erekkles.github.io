@@ -5,7 +5,6 @@ const CART_PRODUCTS = await getJSONData(CART_INFO_URL + '25801' + EXT_TYPE);
 const PRODUCTS_CONTAINER_DIV = $('#products-container'); 
 let { articles } = CART_PRODUCTS.data;
 const USER_ADDED_ARTICLES = JSON.parse(localStorage.getItem('cartItems'));
-console.log("🚀 ~ file: cart.js ~ line 8 ~ USER_ADDED_ARTICLES", USER_ADDED_ARTICLES)
 
 if(USER_ADDED_ARTICLES) articles = [...articles, ...USER_ADDED_ARTICLES];
 
@@ -36,19 +35,19 @@ articles.forEach((article) => {
 });
 
 function changeSubTotalPrice(e) {
-    e.stopPropagation()
+  e.stopPropagation()
 
-    const { id: PRODUCT_ID, value: NEW_AMOUNT } = e.target;
+  const { id: PRODUCT_ID, value: NEW_AMOUNT } = e.target;
 
-    if(!NEW_AMOUNT || NEW_AMOUNT <= 0) return e.target.value = 1;
+  if(!NEW_AMOUNT || NEW_AMOUNT <= 0) return e.target.value = 1;
 
-    const PRODUCT_PRICE = Number(e.target.getAttribute('data-price'));
+  const PRODUCT_PRICE = Number(e.target.getAttribute('data-price'));
 
-    const PRICE_CONTAINER = $(`b[data-priceOf='${PRODUCT_ID}']`);
+  const PRICE_CONTAINER = $(`b[data-priceOf='${PRODUCT_ID}']`);
 
-    const NEW_PRICE = PRODUCT_PRICE * Number(NEW_AMOUNT);
+  const NEW_PRICE = PRODUCT_PRICE * Number(NEW_AMOUNT);
 
-    PRICE_CONTAINER.textContent = `USD ${NEW_PRICE}`;
+  PRICE_CONTAINER.textContent = `USD ${NEW_PRICE}`;
 }
 
 PRODUCTS_CONTAINER_DIV.addEventListener('change', (e) => changeSubTotalPrice(e))
