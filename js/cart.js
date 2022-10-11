@@ -2,10 +2,14 @@ initialRender();
 
 const CART_PRODUCTS = await getJSONData(CART_INFO_URL + '25801' + EXT_TYPE);
 
-const PRODUCTS_CONTAINER_DIV = $('#products-container');
-const { articles: ARTICLES } = CART_PRODUCTS.data;
+const PRODUCTS_CONTAINER_DIV = $('#products-container'); 
+let { articles } = CART_PRODUCTS.data;
+const USER_ADDED_ARTICLES = JSON.parse(localStorage.getItem('cartItems'));
+console.log("🚀 ~ file: cart.js ~ line 8 ~ USER_ADDED_ARTICLES", USER_ADDED_ARTICLES)
 
-ARTICLES.forEach((article) => {
+if(USER_ADDED_ARTICLES) articles = [...articles, ...USER_ADDED_ARTICLES];
+
+articles.forEach((article) => {
     const { id, name, count, unitCost, currency, image } = article;
 
     let htmlToAdd = `

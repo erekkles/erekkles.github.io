@@ -10,8 +10,10 @@ const COMMENTS_DIV = $('#comments_wrapper');
 const NEW_COMMENT_FIELD = $('#commentField');
 const SCORE_FIELD = $('#scoreField');
 const SEND_BUTTON = $('#send_new_message');
+const ADD_TO_CART_BUTTON = $('#addToCartBtn')
 const RELATED_PRODUCTS_DIV = $('#relatedProducts')
 const PRODUCT_ID = localStorage.getItem('productID');
+let itemsInCart = JSON.parse(localStorage.getItem('cartItems'));
 
 let original_stars_markup = ['<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>']
 
@@ -184,6 +186,23 @@ function submitNewComment() {
 }
 
 SEND_BUTTON.addEventListener('click', submitNewComment);
+
+ADD_TO_CART_BUTTON.addEventListener('click', () => {
+
+    if(itemsInCart !== null) itemsInCart = [
+        ...itemsInCart, 
+        {
+            id: PRODUCT_INFO.id,
+            name: PRODUCT_INFO.name,
+            count: 1,
+            unitCost: PRODUCT_INFO.cost,
+            currency: PRODUCT_INFO.currency,
+            image: PRODUCT_INFO.images[0]
+        }
+    ]
+
+    localStorage.setItem('cartItems', JSON.stringify(itemsInCart))
+})
 
 RELATED_PRODUCTS_DIV.addEventListener('click', (e) => {
     e.stopPropagation();
