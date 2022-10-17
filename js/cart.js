@@ -15,7 +15,7 @@ let totalCost;
 let { articles: articles_information } = CART_PRODUCTS.data;
 
 
-if(USER_ADDED_ARTICLES) articles = [...articles, ...USER_ADDED_ARTICLES];
+if(USER_ADDED_ARTICLES) articles_information = [...articles_information, ...USER_ADDED_ARTICLES];
 
 let articles = articles_information.map(function(article) {
   return {
@@ -78,12 +78,12 @@ function renderNewProductPrice(new_price, prod_id) {
 }
 
 function renderSubTotalAmount() {
-  subtotal = articles.map(article => article.totalCost).reduce((prevCost, currCost) => prev + curr);
+  subtotal = articles.map(article => article.totalCost).reduce((prevCost, currCost) => prevCost + currCost);
   SUBTOTAL_P.textContent = `USD ${subtotal}`
 }
 
 function renderDeliveryCost() {
-  const SUBTOTAL = articles.map(article => article.totalCost).reduce((prevCost, currCost) => prev + curr);
+  const SUBTOTAL = articles.map(article => article.totalCost).reduce((prevCost, currCost) => prevCost + currCost);
   const CHECKED_RADIO_VALUE = Array.from(document.querySelectorAll('input[type="radio"][name="delivery"]')).find(radio => radio.checked).id;
 
   switch(CHECKED_RADIO_VALUE) {
