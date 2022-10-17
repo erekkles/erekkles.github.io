@@ -45,10 +45,7 @@
     </div>
   </nav>
   <main>
-    <div class="container">
-      <!-- <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
-      </div> -->
+    <div class="container" id="cartWrapper">
       <h1 class="my-5 text-center">Carrito de compras</h1>
       <h3>Artículos a comprar</h3>
       
@@ -63,13 +60,14 @@
           </tr>
         </thead>
         <tbody id="products-container">
+          <!-- prods here -->
         </tbody>
       </table>
       <hr>
-      <form>
+      <form id="optionsForm">
         <h3 class="my-3">Tipo de envío</h3>
         <div class="form-check">
-          <input type="radio" class="form-check-input" id="premium" name="delivery"/>
+          <input type="radio" class="form-check-input" id="premium" name="delivery" checked/>
           <label class="form-check-label" for="premium">Premium: 2 a 5 días (15%)</label>
         </div>
         <div class="form-check">
@@ -99,6 +97,29 @@
         </div>
       </form>
       <hr>
+      <h3 class="my-3">Costos</h3>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="d-flex justify-content-between w-100">
+            <p class="m-0">Subtotal</p>
+            <p class="m-0" id="subtotalPrice"></p>
+          </div>
+          <p class="m-0"></p>
+        </li>
+        <li class="list-group-item">
+          <div class="d-flex justify-content-between w-100">
+            <p class="m-0">Costo de envío</p>
+            <p class="m-0" id="deliveryCost"></p>
+          </div>
+          <p class="m-0"></p>
+        </li>
+        <li class="list-group-item">
+          <div class="d-flex justify-content-between w-100">
+            <p class="m-0">Total</p>
+            <p class="m-0 fw-bold" id="totalCost"></p>
+          </div>
+        </li>
+      </ul>
     </div>
   </main>
   <footer class="text-muted">
