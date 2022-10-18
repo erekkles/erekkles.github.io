@@ -9,8 +9,8 @@ const SUBTOTAL_P = $('#subtotalPrice');
 const DELIVERY_COST_P = $('#deliveryCost');
 const TOTAL_COST_P = $('#totalCost');
 let deliveryCost;
-let subtotal;
-let totalCost;
+let subtotalCost;
+let allProductsTotalCost;
 
 let { articles: articles_information } = CART_PRODUCTS.data;
 
@@ -23,32 +23,6 @@ let articles = articles_information.map(function(article) {
     totalCost: article.count * article.unitCost
   }
 })
-
-articles.forEach((article) => {
-    const { id, name, count, unitCost, currency, image, totalCost } = article;
-
-    let htmlToAdd = `
-        <tr>
-            <th scope="row" style="width:100px;">
-              <img src="${image}" alt="${name}" class="w-100">
-            </th>
-            <td>
-              ${name}
-            </td>
-            <td>
-              ${currency} ${unitCost}
-            </td>
-            <td>
-              <input value="${count}" type="number" class="form-control" id="${id}" />
-            </td>
-            <td>
-              <b data-priceOf="${id}">${currency} ${totalCost}</b>
-            </td>
-        </tr>
-    `
-
-    PRODUCTS_CONTAINER_DIV.insertAdjacentHTML('beforeEnd', htmlToAdd)
-});
 
 function changeProductPrice(e) {
   e.stopPropagation()
@@ -72,14 +46,16 @@ function changeProductPrice(e) {
 }
 
 function renderNewProductPrice(new_price, prod_id) {
+  const { currency } = articles.find(article => article.id == prod_id);
+
   const PRICE_CONTAINER = $(`b[data-priceOf='${prod_id}']`);
   
-  PRICE_CONTAINER.textContent = `USD ${new_price}`;
+  PRICE_CONTAINER.textContent = `${currency} ${new_price}`;
 }
 
 function renderSubTotalAmount() {
-  subtotal = articles.map(article => article.totalCost).reduce((prevCost, currCost) => prevCost + currCost);
-  SUBTOTAL_P.textContent = `USD ${subtotal}`
+  subtotalCost = articles.map(article => article.totalCost).reduce((prevCost, currCost) => prevCost + currCost);
+  SUBTOTAL_P.textContent = `USD ${subtotalCost}`
 }
 
 function renderDeliveryCost() {
@@ -102,10 +78,9 @@ function renderDeliveryCost() {
 }
 
 function renderTotalCost() {
-  totalCost = deliveryCost + subtotal;
-  TOTAL_COST_P.textContent = `USD ${totalCost}`
+  allProductsTotalCost = deliveryCost + subtotalCost;
+  TOTAL_COST_P.textContent = `USD ${allProductsTotalCost}`
 } 
-
 
 PRODUCTS_CONTAINER_DIV.addEventListener('change', function(e) {
   changeProductPrice(e);
@@ -121,6 +96,32 @@ OPTIONS_FORM.addEventListener('click', function() {
 })
 
 // Initial render
+articles.forEach((article) => {
+  const { id, name, count, unitCost, currency, image, totalCost } = article;
+
+  let htmlToAdd = `
+      <tr id="product-id-${id}">
+          <th scope="row" style="width:100px;">
+            <img src="${image}" alt="${name}" class="w-100">
+          </th>
+          <td>
+            ${name}
+          </td>
+          <td>
+            ${currency} ${unitCost}
+          </td>
+          <td>
+            <input value="${count}" type="number" class="form-control" id="${id}" />
+          </td>
+          <td>
+            <b data-priceOf="${id}">${currency} ${totalCost}</b>
+          </td>
+      </tr>
+  `
+
+  PRODUCTS_CONTAINER_DIV.insertAdjacentHTML('beforeEnd', htmlToAdd)
+});
+
 renderSubTotalAmount();
 renderDeliveryCost();
 renderTotalCost();
