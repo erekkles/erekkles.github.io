@@ -33,7 +33,10 @@ class Cart {
     }
 
     updateSubtotalCost() {
-        this.subtotal_cost = this.articles.map(article => article.totalCost).reduce((prevCost, currCost) => prevCost + currCost);
+        this.subtotal_cost = this.articles.map(article => {
+            if(article.currency == "UYU") return article.totalCost / 40;
+            return article.totalCost;
+        }).reduce((prevCost, currCost) => prevCost + currCost);
 
         return this.subtotal_cost;
     }
