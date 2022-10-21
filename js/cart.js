@@ -2,13 +2,10 @@ import Cart from './modules/cartModule.js';
 
 initialRender();
 
-const products_container_div = $('#products-container'); 
 const options_form = $('#optionsForm');
-const modal = $('#modal');
+
 const user_added_articles = JSON.parse(localStorage.getItem('cartItems'));
-
 const cart_products = await getJSONData(CART_INFO_URL + '25801' + EXT_TYPE);
-
 let { articles: articles_information } = cart_products.data;
 
 if(user_added_articles) articles_information = [...articles_information, ...user_added_articles];
@@ -61,16 +58,48 @@ function cartRenderer() {
     }
   }
 
+  function getPaymentMethod() {
+    return $('#creditCard').checked ? 'Tarjeta de crédito' : 'Transferencia bancaria';
+  }
+
+  function isPaymentMethod() {
+    const modal_warning = $('#modalWarning')
+
+    if($('#creditCard').checked || $('#bankTransfer').checked) {
+      modal_warning.classList.remove('d-block');
+      modal_warning.classList.add('d-none');
+    } else {
+      modal_warning.classList.remove('d-none');
+      modal_warning.classList.add('d-block');
+    }
+  }
+
+  function checkPaymentInputs() {
+    const modal_warning = $('#modalWarning')
+    const payment_inputs = [$('#cardNumber'), $('#secCode'), $('#dueOn'), $('#accountNumber')].filter((input) => input.disabled == false);
+
+    if(payment_inputs.some(input => input.value == '')) {
+      modal_warning.classList.remove('d-none');
+      modal_warning.classList.add('d-block');
+    } else {
+      modal_warning.classList.remove('d-block');
+      modal_warning.classList.add('d-none');
+    }
+  }
+
   return {
     renderNewProductPrice,
     renderAllCosts,
-    disablePaymentMethod
+    disablePaymentMethod,
+    getPaymentMethod,
+    isPaymentMethod,
+    checkPaymentInputs
   }
 }
 
 // Handle user interactions
 
-products_container_div.addEventListener('change', (e) => {
+$('#products-container').addEventListener('change', (e) => {
   e.stopPropagation();
 
   if(e.target.value <= 0) e.target.value = 1;
@@ -81,14 +110,25 @@ products_container_div.addEventListener('change', (e) => {
   cartRenderer().renderAllCosts();
 });  
 
-options_form.addEventListener('click', (e) => {
+$('#deliveryOptions').addEventListener('click', (e) => {
   e.stopPropagation();
   cartRenderer().renderAllCosts();
 });
 
-modal.addEventListener('click', (e) => {
+options_form.addEventListener('submit', (e) => {
+  e.preventDefault();
   e.stopPropagation();
-  cartRenderer().disablePaymentMethod();
+ 
+  cartRenderer().renderAllCosts();
+  cartRenderer().isPaymentMethod();
+  cartRenderer().checkPaymentInputs();
+  options_form.classList.add('was-validated');
+});
+
+$('#modal').addEventListener('click', (e) => {
+  e.stopPropagation();
+  cartRenderer().disablePaymentMethod();  
+  $('#selectedPaymentMethod').textContent = cartRenderer().getPaymentMethod();
 })
 
 // Initial render
@@ -115,7 +155,7 @@ myCart.articles.forEach((article) => {
       </tr>
   `
 
-  products_container_div.insertAdjacentHTML('beforeEnd', htmlToAdd)
+  $('#products-container').insertAdjacentHTML('beforeEnd', htmlToAdd)
 });
 
 cartRenderer().renderAllCosts();
