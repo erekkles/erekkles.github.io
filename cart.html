@@ -45,6 +45,7 @@
     </div>
   </nav>
   <main>
+
     <div class="container" id="cartWrapper">
       <h1 class="my-5 text-center">Carrito de compras</h1>
       <h3>Artículos a comprar</h3>
@@ -64,7 +65,9 @@
           <!-- prods here -->
         </tbody>
       </table>
+
       <hr>
+
       <form id="optionsForm">
         <h3 class="my-3">Tipo de envío</h3>
         <div class="form-check">
@@ -85,42 +88,60 @@
         <div class="row">
           <div class="col-6 mb-3">
             <label for="street">Calle</label>
-            <input type="text" id="street" class="form-control" />
+            <input type="text" id="street" class="form-control" required/>
           </div>
           <div class="col-6 mb-3">
             <label for="doorNumber">Número</label>
-            <input type="text" id="doorNumber" class="form-control" />
+            <input type="text" id="doorNumber" class="form-control" required/>
           </div>
           <div class="col-6 mb-3">
             <label for="cornerStreet">Esquina</label>
-            <input type="text" id="cornerStreet" class="form-control" />
+            <input type="text" id="cornerStreet" class="form-control" required/>
           </div>
         </div>
+
+        <hr>
+
+        <h3 class="my-3">Costos</h3>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between w-100">
+              <div>
+                <p class="m-0">Subtotal</p>
+                <p class="text-muted m-0">Costo unitario del producto por cantidad</p>
+              </div>
+              <p class="m-0" id="subtotalPrice"></p>
+            </div>
+            <p class="m-0"></p>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between w-100">
+              <div>
+                <p class="m-0">Costo de envío</p>
+                <p class="text-muted m-0">Según el tipo de envío</p>
+              </div>
+              <p class="m-0" id="deliveryCost"></p>
+            </div>
+            <p class="m-0"></p>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between w-100">
+              <div>
+                <p class="m-0">Total ($)</p>
+              </div>
+              <p class="m-0 fw-bold" id="totalCost"></p>
+            </div>
+          </li>
+        </ul>
+  
+        <hr>
+  
+        <h3 class="my-3">Forma de pago</h3>
+        <p class="d-inline me-4" id="selectedPaymentMethod">No se ha seleccionado</p>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#modal">Seleccionar</a>
+
+        <button class="btn btn-primary w-100 text-center mt-5" type="submit">Finalizar compra</button>
       </form>
-      <hr>
-      <h3 class="my-3">Costos</h3>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <div class="d-flex justify-content-between w-100">
-            <p class="m-0">Subtotal</p>
-            <p class="m-0" id="subtotalPrice"></p>
-          </div>
-          <p class="m-0"></p>
-        </li>
-        <li class="list-group-item">
-          <div class="d-flex justify-content-between w-100">
-            <p class="m-0">Costo de envío</p>
-            <p class="m-0" id="deliveryCost"></p>
-          </div>
-          <p class="m-0"></p>
-        </li>
-        <li class="list-group-item">
-          <div class="d-flex justify-content-between w-100">
-            <p class="m-0">Total</p>
-            <p class="m-0 fw-bold" id="totalCost"></p>
-          </div>
-        </li>
-      </ul>
     </div>
   </main>
   <footer class="text-muted">
@@ -141,6 +162,55 @@
       <div></div>
     </div>
   </div>
+
+  <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="paymentModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="paymentModalTitle">Forma de pago</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-check">
+              <input type="radio" name="paymentMethod" id="creditCard" class="form-check-input">
+              <label class="form-check-label" for="creditCard">Tarjeta de crédito</label>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-12 col-md-7">
+                <label for="cardNumber" class="form-label">Número de tarjeta</label>
+                <input type="text" class="form-control" id="cardNumber">
+              </div>
+              <div class="col-12 col-md-5">
+                <label for="secCode" class="form-label">Código de seg.</label>
+                <input type="text" class="form-control" id="secCode">
+              </div>
+              <div class="col-12 col-md-7 mt-3">
+                <label for="dueOn" class="form-label">Vencimiento MM/AA</label>
+                <input type="text" class="form-control" id="dueOn">
+              </div>
+            </div>
+            <div class="form-check mt-3">
+              <input type="radio" name="paymentMethod" id="bankTransfer" class="form-check-input">
+              <label for="bankTransfer" class="form-check-label">Transferencia bancaria</label>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-12 col-md-7">
+                <label for="accountNumber" class="form-label">Número de cuenta</label>
+                <input type="number" class="form-control" id="accountNumber">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
   <script type="module" src="js/modules/cartModule.js"></script>

@@ -84,7 +84,6 @@ sorting_container.addEventListener('click', function(e) {
 })
 
 searchbar.addEventListener('input', function(e) {
-
     if(searchbar.value.length <= 0) {
         return sorted_products_by_range.length > 0 ? sorted_products_by_range.forEach((product) => createProductHtml(product)) : products.forEach((product) => createProductHtml(product));
     };
