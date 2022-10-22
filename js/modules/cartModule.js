@@ -52,10 +52,10 @@ class Cart {
         if(this.articles.length <= 0) {
             this.subtotal_cost = 0;
         } else {
-            this.subtotal_cost = this.articles.map(article => {
+            this.subtotal_cost = Math.round(this.articles.map(article => {
                 if(article.currency == "UYU") return article.totalCost / 40;
                 return article.totalCost;
-            }).reduce((prevCost, currCost) => prevCost + currCost);
+            }).reduce((prevCost, currCost) => prevCost + currCost));
         }
 
         this.#saveCart();
@@ -69,7 +69,7 @@ class Cart {
         } else {
             const selected_delivery = Array.from(document.querySelectorAll('input[type="radio"][name="delivery"]')).find(radio => radio.checked).id;
     
-            this.delivery_cost = (this.delivery_options[selected_delivery] * this.subtotal_cost) / 100;
+            this.delivery_cost = Math.round((this.delivery_options[selected_delivery] * this.subtotal_cost) / 100);
         }
 
         this.#saveCart();
@@ -81,7 +81,7 @@ class Cart {
         if(this.articles.length <= 0) {
             this.total_cost = 0;
         } else {
-            this.total_cost = this.delivery_cost + this.subtotal_cost;
+            this.total_cost = Math.round(this.delivery_cost + this.subtotal_cost);
         }
 
         this.#saveCart();
