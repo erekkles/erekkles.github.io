@@ -3,15 +3,12 @@ import Cart from './modules/cartModule.js';
 initialRender();
 
 const options_form = $('#optionsForm');
+const products_table = $('#products-container');
 
 const user_added_articles = JSON.parse(localStorage.getItem('cartItems'));
-const cart_products = await getJSONData(CART_INFO_URL + '25801' + EXT_TYPE);
-let { articles: articles_information } = cart_products.data;
-
-if(user_added_articles) articles_information = [...articles_information, ...user_added_articles];
 
 const myCart = new Cart(
-  articles_information.map(function(article) {
+  user_added_articles.map(function(article) {
     return {
       ...article, 
       totalCost: article.count * article.unitCost
@@ -87,19 +84,55 @@ function cartRenderer() {
     }
   }
 
+  function renderProducts() {
+    products_table.textContent = '';
+
+    myCart.articles.forEach((article) => {
+      const { id, name, count, unitCost, currency, image, totalCost } = article;
+    
+      let htmlToAdd = `
+          <tr id="product-id-${id}">
+              <th scope="row" style="width:100px;">
+                <img src="${image}" alt="${name}" class="w-100">
+              </th>
+              <td>
+                ${name}
+              </td>
+              <td>
+                ${currency} ${unitCost}
+              </td>
+              <td>
+                <input value="${count}" type="number" class="form-control" id="${id}" />
+              </td>
+              <td>
+                <b data-priceOf="${id}">${currency} ${totalCost}</b>
+              </td>
+              <td>
+                <button class="btn btn-outline-danger" data-article="${id}">
+                  <i class="fas fa-trash-alt" data-article="${id}"></i>
+                </button>
+              </td>
+          </tr>
+      `
+
+      products_table.insertAdjacentHTML('beforeEnd', htmlToAdd)
+    });    
+  }
+
   return {
     renderNewProductPrice,
     renderAllCosts,
     disablePaymentMethod,
     getPaymentMethod,
     isPaymentMethod,
-    checkPaymentInputs
+    checkPaymentInputs,
+    renderProducts
   }
 }
 
 // Handle user interactions
 
-$('#products-container').addEventListener('change', (e) => {
+products_table.addEventListener('change', (e) => {
   e.stopPropagation();
 
   if(e.target.value <= 0) e.target.value = 1;
@@ -108,7 +141,18 @@ $('#products-container').addEventListener('change', (e) => {
 
   cartRenderer().renderNewProductPrice(updatedProduct.id);
   cartRenderer().renderAllCosts();
-});  
+}); 
+
+products_table.addEventListener('click', (e) => {
+  const article_id = e.target.getAttribute('data-article');
+
+  if(!article_id) return;
+
+  myCart.deleteArticle(article_id);
+  cartRenderer().renderAllCosts();
+  cartRenderer().renderProducts();
+  console.log(myCart)
+})
 
 $('#deliveryOptions').addEventListener('click', (e) => {
   e.stopPropagation();
@@ -132,30 +176,5 @@ $('#modal').addEventListener('click', (e) => {
 })
 
 // Initial render
-myCart.articles.forEach((article) => {
-  const { id, name, count, unitCost, currency, image, totalCost } = article;
-
-  let htmlToAdd = `
-      <tr id="product-id-${id}">
-          <th scope="row" style="width:100px;">
-            <img src="${image}" alt="${name}" class="w-100">
-          </th>
-          <td>
-            ${name}
-          </td>
-          <td>
-            ${currency} ${unitCost}
-          </td>
-          <td>
-            <input value="${count}" type="number" class="form-control" id="${id}" />
-          </td>
-          <td>
-            <b data-priceOf="${id}">${currency} ${totalCost}</b>
-          </td>
-      </tr>
-  `
-
-  $('#products-container').insertAdjacentHTML('beforeEnd', htmlToAdd)
-});
-
+cartRenderer().renderProducts();
 cartRenderer().renderAllCosts();
