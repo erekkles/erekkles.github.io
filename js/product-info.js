@@ -188,19 +188,25 @@ function submitNewComment() {
 SEND_BUTTON.addEventListener('click', submitNewComment);
 
 ADD_TO_CART_BUTTON.addEventListener('click', () => {
-    const CURRENT_ITEM = [{
+    const CURRENT_ITEM = {
         id: PRODUCT_INFO.id,
         name: PRODUCT_INFO.name,
         count: 1,
         unitCost: PRODUCT_INFO.cost,
         currency: PRODUCT_INFO.currency,
         image: PRODUCT_INFO.images[0]
-    }]
+    }
 
-    if(itemsInCart !== null) itemsInCart = [
-        ...itemsInCart, 
-        ...CURRENT_ITEM
-    ]
+    const repeated_item_index = itemsInCart.findIndex(item => item.id == CURRENT_ITEM.id);
+
+    if(itemsInCart !== null && repeated_item_index == -1) {
+        itemsInCart = [
+            ...itemsInCart, 
+            CURRENT_ITEM
+        ]
+    } else if (itemsInCart !== null && repeated_item_index != -1) {
+        itemsInCart[repeated_item_index].count += 1;
+    }
 
     localStorage.setItem('cartItems', JSON.stringify(itemsInCart ?? CURRENT_ITEM))
 })
