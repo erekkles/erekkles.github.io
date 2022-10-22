@@ -209,6 +209,10 @@ ADD_TO_CART_BUTTON.addEventListener('click', () => {
     }
 
     localStorage.setItem('cartItems', JSON.stringify(itemsInCart ?? CURRENT_ITEM))
+
+    const success_alert = new bootstrap.Alert($('.alert'));
+    success_alert._element.classList.add('show');
+    setTimeout(() => success_alert.close(), 3000)
 })
 
 RELATED_PRODUCTS_DIV.addEventListener('click', (e) => {
