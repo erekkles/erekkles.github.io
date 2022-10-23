@@ -65,9 +65,11 @@ function cartRenderer() {
     if($('#creditCard').checked || $('#bankTransfer').checked) {
       modal_warning.classList.remove('d-block');
       modal_warning.classList.add('d-none');
+      return true;
     } else {
       modal_warning.classList.remove('d-none');
       modal_warning.classList.add('d-block');
+      return false;
     }
   }
 
@@ -75,13 +77,21 @@ function cartRenderer() {
     const modal_warning = $('#modalWarning')
     const payment_inputs = [$('#cardNumber'), $('#secCode'), $('#dueOn'), $('#accountNumber')].filter((input) => input.disabled == false);
 
-    if(payment_inputs.some(input => input.value == '')) {
-      modal_warning.classList.remove('d-none');
-      modal_warning.classList.add('d-block');
-    } else {
+    if(!payment_inputs.some(input => input.value == '')) {
       modal_warning.classList.remove('d-block');
       modal_warning.classList.add('d-none');
+      return true;
+    } else {
+      modal_warning.classList.remove('d-none');
+      modal_warning.classList.add('d-block');
+      return false;
     }
+  }
+
+  function checkDeliveryInputs() {
+    const delivery_inputs = [$('#doorNumber'), $('#street'), $('#cornerStreet')];
+
+    return delivery_inputs.every(input => input.value != '');
   }
 
   function renderProducts() {
@@ -119,6 +129,19 @@ function cartRenderer() {
     });    
   }
 
+  function alertOrderPlacedSuccesfully() {
+    const success_alert = new bootstrap.Alert($('#alertOrderPlaced'));
+    success_alert._element.classList.add('show');
+    setTimeout(() => success_alert._element.classList.remove('show'), 3000);
+  }
+
+  function alertProductDeleted() {
+    console.log('test')
+    const delete_alert = new bootstrap.Alert($('#alertProductDeleted'));
+    delete_alert._element.classList.add('show');
+    setTimeout(() => delete_alert._element.classList.remove('show'), 3000)
+  }
+
   return {
     renderNewProductPrice,
     renderAllCosts,
@@ -126,7 +149,10 @@ function cartRenderer() {
     getPaymentMethod,
     isPaymentMethod,
     checkPaymentInputs,
-    renderProducts
+    checkDeliveryInputs,
+    renderProducts,
+    alertOrderPlacedSuccesfully,
+    alertProductDeleted
   }
 }
 
@@ -149,9 +175,9 @@ products_table.addEventListener('click', (e) => {
   if(!article_id) return;
 
   myCart.deleteArticle(article_id);
+  cartRenderer().alertProductDeleted();
   cartRenderer().renderAllCosts();
   cartRenderer().renderProducts();
-  console.log(myCart)
 })
 
 $('#deliveryOptions').addEventListener('click', (e) => {
@@ -164,8 +190,11 @@ options_form.addEventListener('submit', (e) => {
   e.stopPropagation();
  
   cartRenderer().renderAllCosts();
-  cartRenderer().isPaymentMethod();
-  cartRenderer().checkPaymentInputs();
+
+  if(cartRenderer().isPaymentMethod() && cartRenderer().checkPaymentInputs() && cartRenderer().checkDeliveryInputs()) {
+    cartRenderer().alertOrderPlacedSuccesfully()
+  } 
+  
   options_form.classList.add('was-validated');
 });
 

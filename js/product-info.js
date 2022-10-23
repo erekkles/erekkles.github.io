@@ -212,7 +212,7 @@ ADD_TO_CART_BUTTON.addEventListener('click', () => {
 
     const success_alert = new bootstrap.Alert($('.alert'));
     success_alert._element.classList.add('show');
-    setTimeout(() => success_alert.close(), 3000)
+    setTimeout(() => success_alert._element.classList.remove('show'), 3000)
 })
 
 RELATED_PRODUCTS_DIV.addEventListener('click', (e) => {
