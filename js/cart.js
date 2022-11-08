@@ -136,7 +136,6 @@ function cartRenderer() {
   }
 
   function alertProductDeleted() {
-    console.log('test')
     const delete_alert = new bootstrap.Alert($('#alertProductDeleted'));
     delete_alert._element.classList.add('show');
     setTimeout(() => delete_alert._element.classList.remove('show'), 3000)
