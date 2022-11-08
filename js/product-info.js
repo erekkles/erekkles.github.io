@@ -1,4 +1,5 @@
 initialRender();
+authorizeUser();
 
 const PRODUCT_TITLE = $('#product_name');
 const PRICE_DIV = $('#price');

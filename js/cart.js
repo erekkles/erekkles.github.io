@@ -1,6 +1,7 @@
 import Cart from './modules/cartModule.js';
 
 initialRender();
+authorizeUser();
 
 const options_form = $('#optionsForm');
 const products_table = $('#products-container');

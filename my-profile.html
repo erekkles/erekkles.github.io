@@ -63,41 +63,43 @@
     <div class="container pt-4">
       <header class="d-flex justify-content-between mb-5">
         <h1>Perfil</h1>
-        <img src="./img/img_perfil.png" alt="" class="img-thumbnail" style="width:10%;">
+        <img src="./img/img_perfil.png" alt="" id="profile_preview" class="img-thumbnail" style="width:10%;">
       </header>
       <hr>
-      <div class="input-group row mb-5">
-        <div class="form-group col-12 col-md-6 mb-4">
-          <label for="">Primer nombre *</label>
-          <input type="text" class="form-control col-12 col-md-6" required>
+      <form>
+        <div class="input-group row mb-5">
+          <div class="form-group col-12 col-md-6 mb-4">
+            <label for="">Primer nombre *</label>
+            <input type="text" id="firstName" class="form-control col-12 col-md-6" required>
+          </div>
+          <div class="form-group col-12 col-md-6 mb-4">
+            <label for="">Segundo nombre</label>
+            <input type="text" id="lastName" class="form-control col-12 col-md-6">
+          </div>
+          <div class="form-group col-12 col-md-6 mb-4">
+            <label for="">Primer apellido *</label>
+            <input type="text" id="surname" class="form-control col-12 col-md-6" required>
+          </div>
+          <div class="form-group col-12 col-md-6 mb-4">
+            <label for="">Segundo apellido</label>
+            <input type="text" id="surname2" class="form-control col-12 col-md-6">
+          </div>
+          <div class="form-group col-12 col-md-6 mb-4">
+            <label for="">E-mail</label>
+            <input type="text" id="email" class="form-control col-12 col-md-6">
+          </div>
+          <div class="form-group col-12 col-md-6 mb-4">
+            <label for="">Imagen de perfil</label>
+            <input type="file" id="profile" class="form-control col-12 col-md-6">
+          </div>
+          <div class="form-group col-12 col-md-6 mb-4">
+            <label for="">Teléfono de contacto *</label>
+            <input type="number" id="number" class="form-control col-12 col-md-6" required>
+          </div>         
         </div>
-        <div class="form-group col-12 col-md-6 mb-4">
-          <label for="">Segundo nombre</label>
-          <input type="text" class="form-control col-12 col-md-6">
-        </div>
-        <div class="form-group col-12 col-md-6 mb-4">
-          <label for="">Primer apellido *</label>
-          <input type="text" class="form-control col-12 col-md-6" required>
-        </div>
-        <div class="form-group col-12 col-md-6 mb-4">
-          <label for="">Segundo apellido</label>
-          <input type="text" class="form-control col-12 col-md-6">
-        </div>
-        <div class="form-group col-12 col-md-6 mb-4">
-          <label for="">E-mail</label>
-          <input type="text" class="form-control col-12 col-md-6">
-        </div>
-        <div class="form-group col-12 col-md-6 mb-4">
-          <label for="">Imagen de perfil</label>
-          <input type="file" class="form-control col-12 col-md-6">
-        </div>
-        <div class="form-group col-12 col-md-6 mb-4">
-          <label for="">Teléfono de contacto *</label>
-          <input type="text" class="form-control col-12 col-md-6" required>
-        </div>         
-      </div>
-      <hr>
-      <button class="btn btn-primary">Guardar cambios</button>
+        <hr>
+        <button class="btn btn-primary" id="submit">Guardar cambios</button>
+      </form>
     </div>
   </main>
   <footer class="text-muted">

@@ -13,6 +13,7 @@ form.addEventListener('submit', function(event) {
     if(inputs[0].value.length !== 0 && inputs[1].value.length !== 0) { 
         window.localStorage.setItem('isLogged', true);
         window.localStorage.setItem('name', inputs[0].value);
+        window.localStorage.setItem('email', inputs[0].value)
         window.location.href = location.origin; 
     }
 })
@@ -29,8 +30,9 @@ function parseJwt (token) {
 };
 
 function onSignIn(googleUser) {
-    const username = parseJwt(googleUser.credential).name;
+    const data = parseJwt(googleUser.credential);
     window.localStorage.setItem('isLogged', true);
-    window.localStorage.setItem('name', username);
+    window.localStorage.setItem('name', data.name);
+    window.localStorage.setItem('email', data.email);
     window.location.href = location.origin;
 }

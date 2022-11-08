@@ -61,6 +61,12 @@ let redirectToProductPage = function(id) {
   window.location.href = `${origin}/product-info.html`
 }
 
+let authorizeUser = function() {
+  const isLoggedIn = localStorage.getItem('isLogged');
+  
+  if(!isLoggedIn) return window.location.href = origin;
+}
+
 let showSpinner = function(){
   $("#spinner-wrapper").style.display = "block";
 }

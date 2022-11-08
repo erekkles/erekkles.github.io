@@ -1,4 +1,5 @@
 initialRender();
+authorizeUser();
 
 const catID = window.localStorage.getItem('catID')
 const products_retrieved = await getJSONData(`${PRODUCTS_URL}${catID}${EXT_TYPE}`);

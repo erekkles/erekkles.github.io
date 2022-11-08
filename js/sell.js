@@ -1,4 +1,5 @@
 initialRender();
+authorizeUser();
 
 let productCost = 0;
 let productCount = 0;
