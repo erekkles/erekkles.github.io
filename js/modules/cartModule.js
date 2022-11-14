@@ -89,6 +89,22 @@ class Cart {
         return this.total_cost;
     }
 
+    async sendSaleData() {
+        try {
+            const req = await fetch(CART_BUY_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    name: localStorage.getItem('name') || 'unknown',
+                    email: localStorage.getItem('email') || 'unknown',
+                    articles: this.articles
+                })
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 }
 
 export default Cart;

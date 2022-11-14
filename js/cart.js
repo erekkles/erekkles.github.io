@@ -193,6 +193,7 @@ options_form.addEventListener('submit', (e) => {
 
   if(cartRenderer().isPaymentMethod() && cartRenderer().checkPaymentInputs() && cartRenderer().checkDeliveryInputs()) {
     cartRenderer().alertOrderPlacedSuccesfully()
+    myCart.sendSaleData();
   } 
   
   options_form.classList.add('was-validated');
