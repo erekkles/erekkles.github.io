@@ -14,7 +14,6 @@ const SEND_BUTTON = $('#send_new_message');
 const ADD_TO_CART_BUTTON = $('#addToCartBtn')
 const RELATED_PRODUCTS_DIV = $('#relatedProducts')
 const PRODUCT_ID = localStorage.getItem('productID');
-let itemsInCart = JSON.parse(localStorage.getItem('cartItems'));
 
 let original_stars_markup = ['<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>', '<span class="fa fa-star"></span>']
 
@@ -189,23 +188,25 @@ function submitNewComment() {
 SEND_BUTTON.addEventListener('click', submitNewComment);
 
 ADD_TO_CART_BUTTON.addEventListener('click', () => {
-    const CURRENT_ITEM = {
+    let itemsInCart = JSON.parse(localStorage.getItem('cartItems'));
+
+    const CURRENT_ITEM = [{
         id: PRODUCT_INFO.id,
         name: PRODUCT_INFO.name,
         count: 1,
         unitCost: PRODUCT_INFO.cost,
         currency: PRODUCT_INFO.currency,
         image: PRODUCT_INFO.images[0]
-    }
+    }]
 
-    const repeated_item_index = itemsInCart.findIndex(item => item.id == CURRENT_ITEM.id);
+    const repeated_item_index = itemsInCart?.findIndex(item => item.id == CURRENT_ITEM[0].id) ?? -1;
 
     if(itemsInCart !== null && repeated_item_index == -1) {
         itemsInCart = [
             ...itemsInCart, 
-            CURRENT_ITEM
+            ...CURRENT_ITEM
         ]
-    } else if (itemsInCart !== null && repeated_item_index != -1) {
+    } else if (itemsInCart !== null && repeated_item_index !== -1) {
         itemsInCart[repeated_item_index].count += 1;
     }
 
